@@ -1,0 +1,74 @@
+﻿@page "/Create"
+@using MTechSytem.Data
+@using MTechSytem.Models
+@inject NavigationManager navManager
+@inject EmployeeService EmployeeService
+
+<h2>Create a new employee</h2>
+<div class="row justify-content-center create-form">
+    <div class="col-xl-8 col-lg-10 form-layout">
+        <div class="close-button-section">
+            <button class="btn btn-close" @onclick="ClosePage"></button>
+            <EditForm Model="_employee" OnValidSubmit="CreateEmployee">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div>
+                    <label>
+                        Name
+                        <InputText @bind-Value="_employee.Name" />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Last Name
+                        <InputText @bind-Value="_employee.LastName" />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        RFC
+                        <InputText @bind-Value="_employee.RFC" />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Born Date
+                        <InputDate @bind-Value="_employee.BornDate" />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Status
+                        <InputSelect @bind-Value="_employee.Status">
+                            @foreach (var status in Enum.GetValues(typeof(EmployeeStatus)))
+                            {
+                                <option value="@status">@status</option>
+                            }
+                        </InputSelect>
+                    </label>
+                </div>
+                <button type="submit">Create</button>
+            </EditForm>
+            <p class="alert alert-success">@msgResult</p>
+        </div>
+
+    </div>
+</div>
+@code {
+    private Employee _employee = new Employee();
+    private string msgResult = "";
+
+    private async Task CreateEmployee()
+    {
+        var result = await EmployeeService.CreateEmailAsync(_employee);
+        if(result==200 ){
+            msgResult = "Employee saved successfully";
+            _employee = new Employee();
+        }
+    }
+
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+}

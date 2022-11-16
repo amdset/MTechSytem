@@ -2,6 +2,7 @@
 @using MTechSytem.Data
 @using MTechSytem.Models
 @inject EmployeeService EmployeeService;
+@inject NavigationManager navManager
 
 <PageTitle>MTechSystem</PageTitle>
 
@@ -11,8 +12,17 @@ Register employees to begin.
 
 @*<SurveyPrompt Title="How is Blazor working for you?" EmployeeObj="@emparam" />*@
 
-<div class="alert alert-primary mt-4">
-    <button class="oi oi-plus border-0 p-2"> New Employee</button>
+<div class="header alert alert-primary mt-4">
+    <button class="btnEmployee oi oi-plus border-0" @onclick="LoadCreatePage"> New Employee</button>
+    <div class="mt-2">
+        <EditForm Model="_searchData" OnValidSubmit="FilterEmployees">
+            <label>
+                Search by name
+                <InputText @bind-Value="_searchData.NameToSearch" @onkeyup="@Keypress" />
+            </label>
+            <button type="submit"> Search </button>
+        </EditForm>
+    </div>
 </div>
 
 @if (_employees == null)
@@ -56,6 +66,7 @@ else
 
 
     private List<Employee> _employees;
+    private searchData _searchData = new searchData();
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,6 +80,31 @@ else
         {
             _employees = await EmployeeService.GetEmployees();
         }
+    }
+
+    string KeyPressed = "";
+    private async void Keypress(KeyboardEventArgs args)
+    {
+        if (string.Equals(args.Key, "Enter", StringComparison.OrdinalIgnoreCase))
+        {
+            _employees = await EmployeeService.GetEmployees(_searchData.NameToSearch);
+           // StateHasChanged();
+        }
+    }
+
+    private async Task FilterEmployees(){
+        _employees = await EmployeeService.GetEmployees(_searchData.NameToSearch);
+        //StateHasChanged();
+    }
+
+    class searchData{
+
+        public string NameToSearch{ get; set; }
+    }
+
+    private void LoadCreatePage()
+    {
+        navManager.NavigateTo("/Create");
     }
 
 }

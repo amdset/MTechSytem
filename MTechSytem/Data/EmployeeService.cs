@@ -33,5 +33,17 @@ namespace MTechSytem.Data
             HttpResponseMessage response = await _httpClient.DeleteAsync($"{_urlResource}/{id}");
             return response.StatusCode;
         }
+
+        public async Task<int> CreateEmailAsync(Employee employee)
+        {
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_urlResource, employee);
+            return (int)response.StatusCode;
+        }
+
+        public async Task<HttpStatusCode> UpdateEmail(int id, Employee employee)
+        {
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"{_urlResource}/{id}", employee);
+            return response.StatusCode;
+        }
     }
 }

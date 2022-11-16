@@ -62,3 +62,17 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.btnEmployee{
+    margin-right: 30px;
+}
+
+.header {
+    display: flex;
+}
+
+.form-layout{
+    display:flex;
+    border:1px solid #7678d0;
+    border-radius: 10px;
+}
