@@ -54,7 +54,7 @@ else
                     <td>@emp.RFC</td>
                     <td>@emp.BornDate?.ToShortDateString()</td>
                     <td>@emp.Status</td>
-                    <td> <button class="oi oi-pencil border-0"></button> </td>
+                    <td> <button class="oi oi-pencil border-0" @onclick="(()=>LoadUpdatePage(emp.ID))"></button> </td>
                     <td> <button class="oi oi-x border-0" @onclick="()=>DeleteEmployee(emp.ID)"></button> </td>
                 </tr>
             }
@@ -105,6 +105,10 @@ else
     private void LoadCreatePage()
     {
         navManager.NavigateTo("/Create");
+    }
+
+    private void LoadUpdatePage(int id){
+        navManager.NavigateTo($"/update/{id}"); 
     }
 
 }

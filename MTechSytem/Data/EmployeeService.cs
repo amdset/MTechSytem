@@ -28,6 +28,13 @@ namespace MTechSytem.Data
             return results;
         }
 
+        public async Task<Employee> GetEmployeeById(int id)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync($"{_urlResource}/{id}");
+            var results = await response.Content.ReadFromJsonAsync<Employee>();
+            return results;
+        }
+
         public async Task<HttpStatusCode> DeleteEmployee(int id)
         {
             HttpResponseMessage response = await _httpClient.DeleteAsync($"{_urlResource}/{id}");
