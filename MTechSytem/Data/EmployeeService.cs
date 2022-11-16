@@ -1,4 +1,5 @@
 ﻿using MTechSytem.Models;
+using System.Net;
 
 namespace MTechSytem.Data
 {
@@ -25,6 +26,12 @@ namespace MTechSytem.Data
             HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
             var results = await response.Content.ReadFromJsonAsync<List<Employee>>();
             return results;
+        }
+
+        public async Task<HttpStatusCode> DeleteEmployee(int id)
+        {
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"{_urlResource}/{id}");
+            return response.StatusCode;
         }
     }
 }
