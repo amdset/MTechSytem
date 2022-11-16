@@ -41,13 +41,18 @@ namespace MTechSytem.Data
             return response.StatusCode;
         }
 
-        public async Task<int> CreateEmailAsync(Employee employee)
+        public async Task<Result> CreateEmployeeAsync(Employee employee)
         {
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_urlResource, employee);
-            return (int)response.StatusCode;
+            Result result = new Result()
+            {
+                Status = response.StatusCode,
+                Response = await response.Content.ReadAsStringAsync(),
+            };
+            return result;
         }
 
-        public async Task<HttpStatusCode> UpdateEmail(int id, Employee employee)
+        public async Task<HttpStatusCode> UpdateEmployee(int id, Employee employee)
         {
             HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"{_urlResource}/{id}", employee);
             return response.StatusCode;

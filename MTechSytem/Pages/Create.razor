@@ -60,10 +60,12 @@
 
     private async Task CreateEmployee()
     {
-        var result = await EmployeeService.CreateEmailAsync(_employee);
-        if(result==200 ){
+        var result = await EmployeeService.CreateEmployeeAsync(_employee);
+        if(result.Status == System.Net.HttpStatusCode.OK ){
             msgResult = "Employee saved successfully";
             _employee = new Employee();
+        }else{
+            msgResult = result.Response?.ToString();
         }
     }
 
